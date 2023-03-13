@@ -17,7 +17,13 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('phone')->unique()->nullable();
-            $table->string('ruc')->unique();
+            $table->string('ruc')->unique()->nullable();
+            $table->string('email')->nullable();
+            $table->string('address_1')->nullable();
+            $table->string('address_2')->nullable();
+            $table->string('city')->nullable();
+            $table->string('postcode')->nullable();
+            $table->enum('where', ['LOCAL', 'ONLINE', 'AMBOS', 'nada'])->default('nada');
             $table->timestamps();
             $table->softDeletes();
         });

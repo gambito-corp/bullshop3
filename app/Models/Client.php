@@ -13,6 +13,15 @@ class Client extends Model
     protected $fillable = [
         'name',
         'phone',
-        'ruc'
+        'ruc',
+        'email',
+        'address_1',
+        'address_2',
+        'city',
+        'postcode',
+        'where'
     ];
+    public function SyncAPICustommers(){
+
+    }
 }

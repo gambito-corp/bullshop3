@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\CustomAuthController;
+use App\Http\Controllers\ClientController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,4 +30,9 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+
+//    Rutas de Controlador de Clientes
+    Route::get('clientes', [ClientController::class, 'index'])->name('client.index');
 });
+
+
