@@ -1,15 +1,4 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
-
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                <x-welcome />
-            </div>
-        </div>
-    </div>
-</x-app-layout>
+@extends('layouts.main')
+@section('content')
+    <svg width="100" height="50"><path d="M 10,25 C 10,15 90,15 90,25 C 90,35 10,35 10,25 z" fill="#ff0000" stroke="#000000" stroke-width="1"/></svg>
+@endsection
