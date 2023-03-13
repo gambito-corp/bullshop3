@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\CustomAuthController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,6 +17,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return redirect()->route('login');
 });
+
+Route::get('login', [CustomAuthController::class, 'showLoginForm'])->name('login');
 
 Route::middleware([
     'auth:sanctum',
