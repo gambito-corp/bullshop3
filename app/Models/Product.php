@@ -23,4 +23,26 @@ class Product extends Model
         'size',
         'image'
     ];
+
+    public function scopeSearch($query, $search)
+    {
+        if (trim($search)) {
+            $query->where('sku', 'like', "%{$search}%")
+                ->orWhere('name', 'like', "%{$search}%")
+                ->orWhere('brand', 'like', "%{$search}%")
+                ->orWhere('wp_id', 'like', "%{$search}%")
+                ->orWhere('id', 'like', "%{$search}%");
+        }
+    }
+
+    public function scopeSortByField($query, $sortField, $sortDirection)
+    {
+        $query->orderBy($sortField, $sortDirection);
+    }
+
+    public function Category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
 }

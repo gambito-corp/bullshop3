@@ -14,6 +14,7 @@ module.exports = {
         extend: {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                fontawesome: ['Font Awesome 5 Free']
             },
         },
     },
@@ -21,6 +22,7 @@ module.exports = {
     plugins: [
         require('@tailwindcss/forms'),
         require('@tailwindcss/typography'),
-        require("flowbite/plugin")
+        require("flowbite/plugin"),
+        require('@fortawesome/fontawesome-free'),
     ],
 };

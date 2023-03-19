@@ -10,10 +10,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Play:wght@400;700&display=swap" rel="stylesheet">
-<link
-    rel="stylesheet"
-    href="https://unpkg.com/flowbite@1.0.0/dist/flowbite.min.css"
-/>
 
 <style>
     .marca{
@@ -26,3 +22,5 @@
 
 <!-- Styles -->
 @livewireStyles
+{{--<script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>--}}
+<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>

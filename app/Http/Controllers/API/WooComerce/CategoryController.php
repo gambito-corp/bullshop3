@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API\WooComerce;
 
+use App\Http\Controllers\Controller;
 use App\Interfaces\IWooCommerceService;
-use App\Models\Client;
 use Illuminate\Http\Request;
 
-class ClientController extends Controller
+class CategoryController extends Controller
 {
     private $woocommerceService;
 
@@ -15,15 +15,8 @@ class ClientController extends Controller
         $this->woocommerceService = $woocommerceService;
     }
 
-    public function ejemplo()
-    {
-        $Clientes = Client::all();
-        $Clients = $this->woocommerceService->getAllCustomers();
-
-    }
-
     public function index()
     {
-        return view("admin.clientes.index");
+        return $this->woocommerceService->getCategories();
     }
 }

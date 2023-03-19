@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use App\Interfaces\IWooCommerceService;
 use App\Services\WooCommerceService;
+use App\Interfaces\CategoryServiceInterface;
+use App\Services\CategoryService;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -14,6 +16,7 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(IWooCommerceService::class, WooCommerceService::class);
+        $this->app->bind(CategoryServiceInterface::class, CategoryService::class);
     }
 
     /**
