@@ -10,7 +10,22 @@
         </div>
     </td>
     <td class="px-6 py-4 whitespace-no-wrap">
-        <input type="number" step="0.01" class="w-full text-sm leading-5 text-gray-900" wire:model="product.precio" wire:change="updateCartProduct">
+        @if (!$editing)
+            <button
+                class="bg-blue-500 hover:bg-blue-700 text-white p-2 rounded"
+                wire:click.prevent="toggleEditing"
+            >
+                S/ {{ $product['precio'] }}
+            </button>
+        @else
+            <input
+                type="text"
+                class="border rounded px-2 py-1"
+                wire:model="product.precio"
+                wire:keydown.enter="updateCartProduct"
+                id="price-input-{{ $product['id'] }}"
+            >
+        @endif
     </td>
     <td class="px-6 py-4 whitespace-no-wrap">
         <div class="text-sm leading-5 text-gray-900">{{$product['cantidad']}}</div>

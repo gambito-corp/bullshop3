@@ -6,11 +6,13 @@ use Livewire\Component;
 
 class Product extends Component
 {
-    public $product;
+    public $product, $editing, $newPrice;
 
     public function mount($product)
     {
         $this->product = $product;
+        $this->editing = false;
+        $this->newPrice = $this->product['precio'];
     }
 
     public function render()
@@ -18,13 +20,16 @@ class Product extends Component
         return view('livewire.admin.caja.assets.product');
     }
 
+    public function toggleEditing()
+    {
+        $this->editing = !$this->editing;
+    }
     public function updateCartProduct()
     {
+        $this->toggleEditing();
         $this->emit('productPriceUpdated', $this->product['id'], $this->product['precio']);
         $this->emit('cartUpdated');
     }
-
-
 
     public function removeFromCart($item)
     {
