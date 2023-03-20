@@ -5,49 +5,20 @@
         </div>
     @endif
     @if(count($cart) > 0)
-        <table class="table w-full">
+        <table class="w-full">
             <thead>
-            <tr>
-                <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    imagen
-                </th>
-                <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Producto
-                </th>
-                <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Precio
-                </th>
-                <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Cantidad
-                </th>
-                <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Total
-                </th>
-                <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">acciones</th>
+            <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                <th class="py-3 px-6 text-left">Imagen</th>
+                <th class="py-3 px-6 text-left">Producto</th>
+                <th class="py-3 px-6 text-center">Precio</th>
+                <th class="py-3 px-6 text-center">Cantidad</th>
+                <th class="py-3 px-6 text-center">Total</th>
+                <th class="py-3 px-6 text-center">Acciones</th>
             </tr>
-
             </thead>
-            <tbody>
+            <tbody class="text-gray-600 text-sm font-light">
             @forelse ($cart as $item)
-                <tr>
-                    <td class="text-center">
-                        <img src="{{ $item['imagen'] }}" alt="{{ $item['nombre'] }}" width="100">
-                    </td>
-                    <td class="text-center">{{ $item['nombre'] }}</td>
-                    <td class="text-center">
-                        {{$item['precio']}}
-                    </td>
-                    <td class="text-center">
-                        {{$item['cantidad']}}
-                    </td>
-                    <td class="text-center">{{ $item['precio'] * $item['cantidad'] }}</td>
-                    <td class="text-center">
-                        <button class="bg-red-500 hover:bg-red-700 text-white p-2 rounded" wire:click="removeFromCart({{ $item['id'] }})">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </td>
-                </tr>
-
+                @livewire('admin.caja.assets.product',['product' => $item])
             @empty
                 <tr>
                     <td colspan="6" class="text-center">Escanea un producto para agregarlo al carrito</td>

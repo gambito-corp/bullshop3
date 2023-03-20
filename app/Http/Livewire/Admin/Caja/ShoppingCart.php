@@ -9,6 +9,8 @@ class ShoppingCart extends Component
 {
     public $cart;
 
+    protected $listeners = ['productPriceUpdated' => 'updateProductPrice'];
+
     public function render()
     {
         $this->cart = $this->getCartItems();
@@ -31,6 +33,7 @@ class ShoppingCart extends Component
                         'nombre'    => $product->size != 'S/T' ? $product->name . ' ' . $product->size : $product->name,
                         'precio'    => $product->price,
                         'cantidad'  => 1,
+                        'editMode'  => false, // Agregar la clave 'editMode' con valor false
                     ];
                 } else {
                     $items[$sku]['cantidad']++;
@@ -40,23 +43,13 @@ class ShoppingCart extends Component
         return $items;
     }
 
-    public function removeFromCart($productId)
+    public function updateProductPrice($productId, $newPrice)
     {
-        $cart = session()->get('cart', []);
-        $productRemoved = null;
-
-        foreach ($cart as $index => $item) {
-            if ($item == $productId) {
-                $productRemoved = $item;
-                unset($cart[$index]);
+        foreach ($this->cart as &$product) {
+            if ($product['id'] == $productId) {
+                $product['precio'] = $newPrice;
+                break;
             }
         }
-        session()->forget('cart');
-        session()->get('cart', []);
-        session()->put('cart', $cart);
-        $cart = session()->get('cart', []);
-        $this->cart = $cart;
-        $this->emit('cartUpdated');
-        session()->flash('error', 'Producto eliminado del carrito.');
     }
 }
