@@ -13,7 +13,7 @@
         @if (!$editing)
             <button
                 class="bg-blue-500 hover:bg-blue-700 text-white p-2 rounded"
-                wire:click.prevent="toggleEditing"
+                wire:click.prevent="toggleEditing('precio')"
             >
                 S/ {{ $product['precio'] }}
             </button>
@@ -21,14 +21,29 @@
             <input
                 type="text"
                 class="border rounded px-2 py-1"
-                wire:model="product.precio"
+                wire:model.defer="product.precio"
                 wire:keydown.enter="updateCartProduct"
                 id="price-input-{{ $product['id'] }}"
             >
         @endif
     </td>
     <td class="px-6 py-4 whitespace-no-wrap">
-        <div class="text-sm leading-5 text-gray-900">{{$product['cantidad']}}</div>
+        @if (!$editing)
+            <button
+                class="bg-blue-500 hover:bg-blue-700 text-white p-2 rounded"
+                wire:click.prevent="toggleEditing('cantidad')"
+            >
+                {{ $product['cantidad'] }}
+            </button>
+        @else
+            <input
+                type="text"
+                class="border rounded px-2 py-1"
+                wire:model.defer="product.cantidad"
+                wire:keydown.enter="updateCartProduct"
+                id="cantidad-input-{{ $product['id'] }}"
+            >
+        @endif
     </td>
     <td class="px-6 py-4 whitespace-no-wrap">
         <div class="text-sm leading-5 text-gray-900">{{$product['cantidad']*$product['precio']}}</div>

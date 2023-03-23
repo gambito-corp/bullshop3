@@ -95,6 +95,19 @@ class ProductComponent extends Component
             return;
         }
         $cart = session()->get('cart', []);
+        $cart = session()->get('cart');
+        if ($cart && count($cart) > 0) {
+            $count = 0;
+            foreach ($cart as $id) {
+                if ($id == $product->id) {
+                    $count++;
+                }
+            }
+            if ($count >= $product->stock) {
+                session()->flash('error', 'No se pueden agregar más productos. Se ha alcanzado el límite del stock disponible.');
+                return;
+            }
+        }
         $cart[] = $productId;
         session()->put('cart', $cart);
         session()->flash('message', 'Producto agregado al carrito.');

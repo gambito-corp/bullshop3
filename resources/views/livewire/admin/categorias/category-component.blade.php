@@ -17,9 +17,9 @@
     </div>
 
     <div class="flex justify-between items-center mb-3">
-        <button wire:click="create()" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-            Agregar nueva categoría
-        </button>
+{{--        <button wire:click="create()" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">--}}
+{{--            Agregar nueva categoría--}}
+{{--        </button>--}}
         <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" wire:click="toggleShowDeleted">
             {{ $showDeleted ? 'Salir de papelera' : 'Ver papelera' }}
         </button>
@@ -43,31 +43,10 @@
                     ID ↑↓
                 </th>
                 <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    SKU ↑↓
-                </th>
-                <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    WP_ID ↑↓
-                </th>
-                <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Nombre ↑↓
                 </th>
                 <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Talla ↑↓
-                </th>
-                <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Marca ↑↓
-                </th>
-                <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Precio ↑↓
-                </th>
-                <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Costo ↑↓
-                </th>
-                <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Stock ↑↓
-                </th>
-                <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Imagen
+                    Descripción
                 </th>
                 <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Acciones
@@ -75,31 +54,18 @@
             </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
-            @forelse($products as $product)
+            @forelse($categories as $category)
                 <tr>
-                    <td class="px-6 py-4 text-center whitespace-nowrap">{{ $product->id }}</td>
-                    <td class="px-6 py-4 text-center whitespace-nowrap">{{ $product->sku }}</td>
-                    <td class="px-6 py-4 text-center whitespace-nowrap">{{ $product->wp_id }}</td>
-                    <td class="px-6 py-4 text-center whitespace-nowrap">{{ $product->name }}</td>
-                    <td class="px-6 py-4 text-center whitespace-nowrap">{{ $product->size }}</td>
-                    <td class="px-6 py-4 text-center whitespace-nowrap">{{ $product->brand }}</td>
-                    <td class="px-6 py-4 text-center whitespace-nowrap">{{ $product->price }}</td>
-                    <td class="px-6 py-4 text-center whitespace-nowrap">{{ $product->cost }}</td>
-                    <td class="px-6 py-4 text-center whitespace-nowrap">{{ $product->stock }}</td>
-                    <td class="px-6 py-4 text-center whitespace-nowrap">
-                        @if($product->image)
-                            <img src="{{ $product->image }}" alt="{{ $product->name }}" width="100">
-                        @else
-                            No image
-                        @endif
-                    </td>
+                    <td class="px-6 py-4 text-center whitespace-nowrap">{{ $category->id }}</td>
+                    <td class="px-6 py-4 text-center whitespace-nowrap">{{ $category->name }}</td>
+                    <td class="px-6 py-4 text-center whitespace-nowrap">{{ $category->description }}</td>
                     <td class="px-6 py-4 text-center whitespace-nowrap">
                         <!-- Aquí puedes agregar botones para acciones como editar y eliminar -->
                     </td>
                 </tr>
             @empty
                 <tr>
-                    <td colspan="11" class="text-center">No hay productos disponibles</td>
+                    <td colspan="4" class="text-center">No hay categorías disponibles</td>
                 </tr>
             @endforelse
             </tbody>

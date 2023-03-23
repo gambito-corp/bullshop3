@@ -102,10 +102,15 @@
                     </td>
                     <td class="text-center">
                         <div class="flex items-center">
+                            @if($product->stock >= 0 || $product->stock == null || empty($product->stock))
                             <!-- Botón para agregar al carrito -->
-                            <button class="bg-blue-500 hover:bg-blue-700 text-white p-2 rounded mr-2" wire:click="addToCart({{ $product->id }})">
-                                <i class="fas fa-shopping-cart"></i>
-                            </button>
+                            <form wire:submit.prevent="addToCart({{ $product->id }})" wire:loading.attr="disabled" wire:target="addToCart({{ $product->id }})">
+                                <button class="bg-blue-500 hover:bg-blue-700 text-white p-2 rounded mr-2">
+                                    <i class="fas fa-shopping-cart"></i>
+                                </button>
+                            </form>
+                            @endif
+
                             <button @click="sku = '{{ $product->sku }}'; productName = '{{ $product->name }}'; productBrand = '{{ $product->brand }}'; productSize = '{{ $product->size }}'; productPrice = '{{ $product->price }}'; showModal = true; generateBarcode(sku);" class="bg-blue-500 hover:bg-blue-700 text-white p-2 rounded">
                                 <i class="fas fa-barcode"></i>
                             </button>

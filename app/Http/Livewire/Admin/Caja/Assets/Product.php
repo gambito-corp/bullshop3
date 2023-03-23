@@ -31,24 +31,8 @@ class Product extends Component
         $this->emit('cartUpdated');
     }
 
-    public function removeFromCart($item)
+    public function removeFromCart()
     {
-        dd($item);
-        $cart = session()->get('cart', []);
-        $productRemoved = null;
-
-        foreach ($cart as $index => $item) {
-            if ($item == $productId) {
-                $productRemoved = $item;
-                unset($cart[$index]);
-            }
-        }
-        session()->forget('cart');
-        session()->get('cart', []);
-        session()->put('cart', $cart);
-        $cart = session()->get('cart', []);
-        $this->cart = $cart;
-        $this->emit('cartUpdated');
-        session()->flash('error', 'Producto eliminado del carrito.');
+        $this->emit('removeFromCart', $this->product['id']);
     }
 }

@@ -1,54 +1,47 @@
 <div>
-    <div>
-        <!-- Button to open modal -->
-        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" wire:click="$emit('openModal')">
-            Open Modal
-        </button>
-
-        <!-- Modal -->
-        <div class="fixed z-10 inset-0 overflow-y-auto" style="display: none;" id="modal">
-            <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-                <div class="fixed inset-0 transition-opacity" aria-hidden="true">
-                    <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
-                </div>
-
-                <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                    <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                        <!-- Modal content -->
-                        <div class="mb-4">
-                            <h3 class="text-lg leading-6 font-medium text-gray-900">
-                                Your Modal Title
-                            </h3>
-                        </div>
-                        <div>
-                            <p class="text-sm text-gray-500">
-                                Your modal content goes here...
-                            </p>
-                        </div>
-                    </div>
-                    <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                        <!-- Modal buttons -->
-                        <button type="button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" wire:click="$emit('closeModal')">
-                            Close
-                        </button>
-                    </div>
-                </div>
-            </div>
+    <div class="w-full overflow-hidden rounded-lg shadow-xs">
+        <div class="w-full overflow-x-auto">
+            <table class="w-full whitespace-nowrap">
+                <thead>
+                <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
+                    <th class="px-4 py-3">Nombre</th>
+                    <th class="px-4 py-3">SKU</th>
+                    <th class="px-4 py-3">Precio</th>
+                    <th class="px-4 py-3">Cantidad</th>
+                    <th class="px-4 py-3">Total</th>
+                    <th class="px-4 py-3">Acciones</th>
+                </tr>
+                </thead>
+                <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
+{{--                @dump($products)--}}
+                @foreach ($products as $product)
+                    <tr class="text-gray-700 dark:text-gray-400">
+                        <td class="px-4 py-3">{{ $product['nombre'] }}</td>
+                        <td class="px-4 py-3">{{ $product['sku'] }}</td>
+                        <td class="px-4 py-3">
+                            <input type="number" step="1" min="0" class="w-full px-4 py-2 text-sm text-gray-700 bg-gray-200 border-none rounded-md focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                                   wire:model.defer="products.{{ $loop->index }}.precio"
+                                   wire:change="editUnitPrice({{ $product['id'] }}, $event.target.value)"
+                            >
+                        </td>
+                        <td class="px-4 py-3">
+                            <input type="number" step="1" min="0" class="w-full px-4 py-2 text-sm text-gray-700 bg-gray-200 border-none rounded-md focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                                   wire:model.defer="products.{{ $loop->index }}.cantidad"
+                                   wire:change="editUnitQuantity({{ $product['id'] }}, $event.target.value)"
+                            >
+                        </td>
+                        <td class="px-4 py-3">
+                            {{ $product['precio'] * $product['cantidad'] }}
+                        </td>
+                        <td class="px-4 py-3">
+                            <button class="px-4 py-2 text-sm font-semibold text-white bg-red-500 hover:bg-red-600 rounded-md"
+                                    wire:click="remover({{ $product['id'] }})">Eliminar</button>
+                        </td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
         </div>
     </div>
-
-    @push('scripts')
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                Livewire.on('openModal', () => {
-                    document.getElementById('modal').style.display = 'block';
-                });
-
-                Livewire.on('closeModal', () => {
-                    document.getElementById('modal').style.display = 'none';
-                });
-            });
-        </script>
-    @endpush
 
 </div>
