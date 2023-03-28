@@ -5,6 +5,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SaleController;
+use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -41,6 +42,7 @@ Route::middleware([
     Route::get('categorias', [CategoryController::class, 'index'])->name('category.index');
     Route::get('productos', [ProductController::class, 'index'])->name('product.index');
     Route::get('caja', [SaleController::class, 'index'])->name('sale.index');
+    Route::get('usuarios', [UsersController::class, 'index'])->name('user.index');
 });
 
 

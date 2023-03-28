@@ -71,14 +71,104 @@
         <div class="w-full lg:w-1/3">
             <div class="mb-4">
                 {{--    clientes--}}
-                <div class="flex-shrink-0 w-full md:w-1/3 p-6">
-                    Bloque de Cliente
+                <form class="w-full" wire:submit.prevent="fetchClientData">
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="dni">
+                            DNI
+                        </label>
+                        <input
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            id="dni" type="text" placeholder="Ingrese DNI" wire:model="dni" required>
+                    </div>
+                    <button
+                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                        type="submit">
+                        Buscar cliente
+                    </button>
+                </form>
+                <h1 class="font-bold text-lg text-gray-800">
+                    Nombre:
+                    <span class="text-blue-600">
+                        {{isset($cliente) ? $cliente->name : '...'}}
+                    </span>
+                </h1>
+
+                <div class="connect-sorting">
+                    <h5 class="text-center mb-3">RESUMEN DE VENTA</h5>
+
+                    <div class="connect-sorting-content">
+                        <div class="card simple-title-task">
+                            <div class="card-body">
+                                <div class="flex justify-between">
+                                    <div>
+                                        <h2 class="text-lg font-bold mb-2">TOTAL: S/. {{number_format($total, 2)}}</h2>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-lg font-bold mb-2 mr-4">Articulos: {{$cantidad}}</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
             </div>
             <div class="mb-4">
                 {{--    pago--}}
-                <div class="flex-shrink-0 w-full md:w-1/3 p-6">
-                    Bloque de pago
+
+
+
+
+
+
+                <div class="mt-3">
+                    <div class="sm:col-span-12">
+                        <div class="connect-sorting">
+                            <h5 class="text-center mb-2">DENOMINACIONES</h5>
+                            <div class="container">
+                                <div class="flex flex-wrap">
+                                    <div class="mt-2 w-full sm:w-auto">
+                                        <div class="flex">
+                                            <form wire:submit.prevent>
+                                                <input type="text" wire:model="montoMedio" class="border border-gray-300 p-2 rounded" placeholder="Ingrese un número">
+                                                @if($montoMedio > 0)
+                                                    <div class="relative inline-block text-left ml-2">
+                                                        <button type="button" class="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                                            Medio De Pago
+                                                        </button>
+                                                        <div class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                                                            <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                                                                <a href="#" wire:click.prevent="processInput('Opción 1', {{$montoMedio}})" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">Opción 1</a>
+                                                                <a href="#" wire:click.prevent="processInput('Opción 2', {{$montoMedio}})" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">Opción 2</a>
+                                                                <a href="#" wire:click.prevent="processInput('Opción 3', {{$montoMedio}})" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">Opción 3</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                                @error('montoMedio') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            @if($resto <= 0)
+                                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold mt-12 py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                        wire:click="venta">
+                                    Pagar
+                                </button>
+                            @endif
+                            @if($change > 0)
+                                <h1 class="font-bold text-lg text-gray-800">
+                                    Cambio:
+                                    <span class="text-blue-600">
+                                        {{isset($change) ? $change : '...'}}
+                                    </span>
+                                </h1>
+                            @endif
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

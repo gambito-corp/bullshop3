@@ -3,17 +3,21 @@
 namespace App\Http\Livewire\Admin\Caja;
 
 use App\Http\Controllers\API\ApiController;
+use App\Models\Client;
 use App\Models\Product;
 use Livewire\Component;
 
 class ShoppingCart extends Component
 {
-    public $products, $search;
+    public $products, $search, $dni, $cliente, $total, $cantidad, $montoMedio, $change, $efectivo, $resto, $tipo;
 
     public function mount()
     {
         $this->products = $this->getProducts();
         $this->search = '';
+        $this->total = $this->products->sum('total');
+        $this->cantidad = $this->products->sum('cantidad');
+        $this->tipo = collect();
     }
 
     public function render()
@@ -61,20 +65,20 @@ class ShoppingCart extends Component
         });
         session()->put('cart', $filteredCart);
         $this->products = $this->getProducts();
+        $this->total = $this->products->sum('total');
+        $this->cantidad = $this->products->sum('cantidad');
     }
 
     public function editUnitPrice($productId, $precio)
     {
         $product = $this->products->where('id', $productId)->first();
         $product['precio'] = $precio;
+        $product['total'] = $product['cantidad'] * $precio;
+        $this->products->put($this->products->search($product), $product);
+        $this->total = $this->products->sum('total');
+        $this->cantidad = $this->products->sum('cantidad');
+        $this->emit('productAdded');
     }
-
-//    public function editUnitQuantity($productId, $cantidad)
-//    {
-//        $productStock = Product::where('id', $productId)->first();
-//        $product = $this->products->where('id', $productId)->first();
-//        $product['cantidad'] = $cantidad;
-//    }
 
     public function editUnitQuantity($productId, $cantidad)
     {
@@ -84,12 +88,15 @@ class ShoppingCart extends Component
         // Comprobar si la cantidad es válida (es decir, no excede el stock)
         if ($cantidad <= $productStock->stock) {
             $product['cantidad'] = $cantidad;
+            $product['total'] = $product['precio'] * $cantidad;
+            $this->products->put($this->products->search($product), $product);
+            $this->total = $this->products->sum('total');
+            $this->cantidad = $this->products->sum('cantidad');
             session()->flash('message', 'La cantidad del producto '.$product['sku'].' se Actualizo');
         } else {
             session()->flash('error', 'La cantidad supera el stock disponible para el producto '.$product['sku'].' el cual solo tiene '.$productStock->stock.' unidades de stock actualmente.');
         }
     }
-
 
     public function updateProductStock($product)
     {
@@ -135,4 +142,73 @@ class ShoppingCart extends Component
         }
     }
 
+    public function fetchClientData()
+    {
+        switch ($this->dni)
+        {
+            case strlen($this->dni) == 8:
+                $cliente = ApiController::Reniec($this->dni);
+                if(!$cliente ){
+                    session()->flash('error', 'No Se ha encontrado un cliente en la base de datos de Reniec.');
+                }
+                $this->cliente = $this->buscarCliente($this->dni, $cliente['nombre']);
+                    break;
+            case strlen($this->dni) == 11:
+                $cliente = ApiController::Sunat($this->dni);
+                if(!$cliente ){
+                    session()->flash('error', 'No Se ha encontrado un cliente en la base de datos de Sunat.');
+                }
+                $this->cliente = $this->buscarCliente($this->dni, $cliente['nombre']);
+                break;
+            default:
+                session()->flash('error', 'El número de DNI/RUC ingresado no es válido.');
+                $this->cliente = $this->buscarCliente(0, 'Cliente Anonimo');
+                $this->dni = '';
+                break;
+        }
+    }
+
+    public function buscarCliente($dni, $name)
+    {
+        $cliente = Client::where('ruc', $dni)->first();
+
+        if ($cliente) {
+            // Si se encuentra un cliente con el RUC correspondiente, no es necesario hacer nada más
+            session()->flash('success', 'Se ha encontrado un cliente en la base de datos.');
+        } else {
+            // Si no se encuentra un cliente con el RUC correspondiente, se crea un nuevo registro en la tabla "clients"
+            $cliente = new Client();
+            $cliente->ruc = $dni;
+            $cliente->name = $name;
+            $cliente->save();
+            session()->flash('success', 'Se ha creado un nuevo cliente en la base de datos.');
+        }
+        return $cliente;
+    }
+
+
+    public function updatedMontoMedio()
+    {
+        $this->validate([
+            'montoMedio' => 'required|integer|min:1',
+        ]);
+    }
+
+    public function processInput($tipo, $value)
+    {
+        if ($value >= 1) {
+            $valor = ($this->resto <= $value) ? $this->resto : $value;
+
+            $this->tipo->push([
+                'Tipo' => $tipo,
+                'Valor' => $valor
+            ]);
+
+            $this->efectivo += ($value == 0 ? $this->total : $value);
+            $this->change = ($this->efectivo - $this->total);
+            $this->resto = $this->total - $this->efectivo;
+        }
+
+        $this->montoMedio = 0;
+    }
 }
